@@ -45,7 +45,8 @@ async function init() {
         otpInput.addEventListener('input', console.log)
         document.body.appendChild(otpInput)
         setTimeout(()=>{
-//           document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('autocomplete', 'one-time-code')
+          document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('autocomplete', 'one-time-code')
+          document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('type', 'number')
           document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.root-container').setAttribute('autocomplete', 'on')
         }, 2000)
       }
