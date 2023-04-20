@@ -18,37 +18,61 @@ async function init() {
         dpaLocale: 'en_US',
         cardBrands: state.cardBrands
       }))
-      const cards = await c2p.getCards()
-      if(cards.length) {
-        const cardList = document.createElement('src-card-list')
-        customElements.whenDefined('src-card-list')
-        cardList.loadCards(cards)
-        cardList.cardBrands = state.cardBrands
-        document.body.appendChild(cardList)
-      } else {
-        const lookupResult = await c2p.idLookup({ email: document.querySelector('#email').value })
-        console.log(lookupResult)
-        if(!lookupResult.consumerPresent) {
-          console.warn('account not found')
+      function createWindow() {
+        const popupConfiguration = {
+          toolbar: 'no',
+          location: 'no',
+          directories: 'no',
+          status: 'no',
+          menubar: 'no',
+          scrollbars: 'yes',
+          resizable: 'no',
+          copyhistory: 'no',
+          width: 280,
+          height: 400
         }
 
-        await c2p.initiateValidation()
+        return window.open('', 'src-window', Object
+          .keys(popupConfiguration)
+          .map(k => `${k}=${popupConfiguration[k]}`)
+          .join(', '))
+      }
 
-        const otpInput = document.createElement('src-otp-input')
-        await customElements.whenDefined('src-otp-input')
-        otpInput.cardBrands = state.cardBrands
-        otpInput.displayHeader = true
-        otpInput.type = "overlay"
-        otpInput.addEventListener('otpChanged', (event) => {
-          handleOTP(event, c2p, otpInput)
-        })
-        otpInput.addEventListener('input', console.log)
-        document.body.appendChild(otpInput)
-        setTimeout(()=>{
-          document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('autocomplete', 'one-time-code')
-          document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('type', 'number')
-          document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.root-container').setAttribute('autocomplete', 'on')
-        }, 2000)
+      const windowRef = createWindow()
+      await c2p.checkout({
+        windowRef
+      })
+//       const cards = await c2p.getCards()
+//       if(cards.length) {
+//         const cardList = document.createElement('src-card-list')
+//         customElements.whenDefined('src-card-list')
+//         cardList.loadCards(cards)
+//         cardList.cardBrands = state.cardBrands
+//         document.body.appendChild(cardList)
+//       } else {
+//         const lookupResult = await c2p.idLookup({ email: document.querySelector('#email').value })
+//         console.log(lookupResult)
+//         if(!lookupResult.consumerPresent) {
+//           console.warn('account not found')
+//         }
+
+//         await c2p.initiateValidation()
+
+//         const otpInput = document.createElement('src-otp-input')
+//         await customElements.whenDefined('src-otp-input')
+//         otpInput.cardBrands = state.cardBrands
+//         otpInput.displayHeader = true
+//         otpInput.type = "overlay"
+//         otpInput.addEventListener('otpChanged', (event) => {
+//           handleOTP(event, c2p, otpInput)
+//         })
+//         otpInput.addEventListener('input', console.log)
+//         document.body.appendChild(otpInput)
+//         setTimeout(()=>{
+//           document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('autocomplete', 'one-time-code')
+//           document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('type', 'number')
+//           document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.root-container').setAttribute('autocomplete', 'on')
+//         }, 2000)
       }
     } catch (e) {
       console.log(e)
