@@ -73,7 +73,7 @@ async function init() {
 //           document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.al-input--code__fields').setAttribute('type', 'number')
 //           document.querySelector('src-otp-input').shadowRoot.querySelector('sal-modal').shadowRoot.querySelector('div').querySelector('slot').assignedElements()[0].querySelector('sal-code-input').shadowRoot.querySelector('.root-container').setAttribute('autocomplete', 'on')
 //         }, 2000)
-      }
+//       }
     } catch (e) {
       console.log(e)
     }
