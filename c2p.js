@@ -29,7 +29,10 @@ async function startHosted() {
         experienceType: "ACTION_SHEET",
       });
     } catch (e) {
+      const outputSection = document.querySelector("pre");
       console.error(e);
+      document.body.style.background = "rgb(56, 10, 15)";
+      outputSection.innerText = JSON.stringify(e, null, 2);
     }
   });
 }
