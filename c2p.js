@@ -31,21 +31,21 @@ async function startHosted() {
         services: ["HOSTED_CHECKOUT"],
         ...(emailAddress && { consumer: { emailAddress } }),
       })
-      updateOutput(initResult)
+      updateOutput(JSON.stringify(initResult, null, 2))
       changeBackground("rgb(36, 100, 50)")
       
 
       const checkoutResult = await c2p.checkout({
         experienceType: "ACTION_SHEET",
       });
-      updateOutput(checkoutResult)
+      updateOutput(JSON.stringify(checkoutResult, null, 2))
       changeBackground("rgb(0, 100, 0)")
       
     } catch (e) {
       const outputSection = document.querySelector("pre");
       console.error(e);
       changeBackground("rgb(46, 10, 15)")
-      updateOutput(JSON.stringify(e))
+      updateOutput(JSON.stringify(e, null, 2))
     }
   });
 }
