@@ -2,6 +2,15 @@ const state = {
   cardBrands: ["mastercard", "visa"],
 };
 
+function changeBackground(newBackground) {
+  document.body.style.background = newBackground;
+}
+
+function updateOutput(newOutput) {
+  const outputSection = document.querySelector("pre");
+  outputSection.innerText = outputSection.innerText + newOutput
+}
+
 async function startHosted() {
   const libJS = document.createElement("script");
   localStorage.setItem("c2p.enable_hosted_checkout_service", "true");
@@ -12,27 +21,31 @@ async function startHosted() {
     try {
       console.log("cardBrands", state.cardBrands);
       const emailAddress = document.querySelector("#email").value;
-      console.log(
-        await c2p.init({
-          srcDpaId: "b756a2b0-ef62-4c62-a6de-f72e75ce5f17",
-          dpaData: {
-            dpaName: "Greyjoy",
-          },
-          dpaLocale: "en_US",
-          cardBrands: state.cardBrands,
-          services: ["HOSTED_CHECKOUT"],
-          ...(emailAddress && { consumer: { emailAddress } }),
-        })
-      );
+      const initResult = await c2p.init({
+        srcDpaId: "b756a2b0-ef62-4c62-a6de-f72e75ce5f17",
+        dpaData: {
+          dpaName: "Greyjoy",
+        },
+        dpaLocale: "en_US",
+        cardBrands: state.cardBrands,
+        services: ["HOSTED_CHECKOUT"],
+        ...(emailAddress && { consumer: { emailAddress } }),
+      })
+      updateOutput(initResult)
+      changeBackground("rgb(36, 100, 50)")
+      
 
-      await c2p.checkout({
+      const checkoutResult = await c2p.checkout({
         experienceType: "ACTION_SHEET",
       });
+      updateOutput(checkoutResult)
+      changeBackground("rgb(0, 100, 0)")
+      
     } catch (e) {
       const outputSection = document.querySelector("pre");
       console.error(e);
-      document.body.style.background = "rgb(56, 10, 15)";
-      outputSection.innerText = JSON.stringify(e, null, 2);
+      changeBackground("rgb(46, 10, 15)")
+      updateOutput(JSON.stringify(e))
     }
   });
 }
