@@ -57,13 +57,13 @@ function updateCardBrands(event) {
 }
 
 (async function () {
-  await customElements.whenDefined("src-mark");
-  const mark = document.querySelector("src-mark");
-  mark.cardBrands = state.cardBrands;
+  await customElements.whenDefined("src-button");
+  const button = document.querySelector("src-button");
+  button.cardBrands = state.cardBrands;
 
   cardBrandsInput = document.querySelector("#cardBrands");
   cardBrandsInput.value = state.cardBrands.join(",");
   cardBrandsInput.addEventListener("input", updateCardBrands);
 
-  mark.addEventListener("click", startHosted);
+  button.addEventListener("click", startHosted);
 })();
